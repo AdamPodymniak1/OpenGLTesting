@@ -88,21 +88,29 @@ int main()
         return -1;
     }
 
+    glEnable(GL_DEPTH_TEST);
+
+    const float FIRST_T_Z = 0.5f;
+    const float SECOND_T_Z = -0.5f;
+
     float vertices[] = {
-        0.0f,  0.0f,
+        -1.0f,  -1.0f, FIRST_T_Z,
         1.0f, 0.0f, 0.0f,
 
-        1.0f, 1.0f,
+        0.0f, 1.0f, FIRST_T_Z,
         0.0f, 1.0f, 0.0f,
 
-        -1.0f, 1.0f,
+        1.0f, -1.0f, FIRST_T_Z,
         0.0f, 0.0f, 1.0f,
 
-        -1.0f, -1.0f,
+        -1.0f, 1.0f, SECOND_T_Z,
         1.0f, 1.0f, 0.0f,
 
-        1.0f, -1.0f,
+        0.0f, -1.0f, SECOND_T_Z,
         0.0f, 1.0f, 1.0f,
+
+        1.0f, 1.0f, SECOND_T_Z,
+        1.0f, 0.0f, 1.0f,
     };
 
     GLuint VAO;
@@ -115,14 +123,14 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
 
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char*)(2 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char*)(3 * sizeof(float)));
 
     unsigned short indices[] = {
         0,1,2,
-        0,3,4,
+        3,4,5,
     };
 
     GLuint EBO;
@@ -144,6 +152,7 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
+        glClear(GL_DEPTH_BUFFER_BIT);
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height);
 
