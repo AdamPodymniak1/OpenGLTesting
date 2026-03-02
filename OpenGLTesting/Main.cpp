@@ -49,12 +49,19 @@ int main()
 
     float vertices[] = {
         0.0f,  0.0f,
+        1.0f, 0.0f, 0.0f,
 
         1.0f, 1.0f,
+        0.0f, 1.0f, 0.0f,
+
         -1.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
 
         -1.0f, -1.0f,
+        1.0f, 1.0f, 0.0f,
+
         1.0f, -1.0f,
+        0.0f, 1.0f, 1.0f,
     };
 
     GLuint VAO;
@@ -66,8 +73,11 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char*)(2 * sizeof(float)));
 
     unsigned short indices[] = {
         0,1,2,
@@ -82,18 +92,22 @@ int main()
     const char* vertexShaderSource = R"(
         #version 400
         layout (location = 0) in vec2 aPos;
+        layout (location = 1) in vec3 aCol;
+        out vec3 fCol;
         void main()
         {
+            fCol = aCol;
             gl_Position = vec4(aPos, 0.0, 1.0);
         }
     )";
 
     const char* fragmentShaderSource = R"(
         #version 400
+        in vec3 fCol;
         out vec4 FragColor;
         void main()
         {
-            FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+            FragColor = vec4(fCol, 1.0);
         }
     )";
 
