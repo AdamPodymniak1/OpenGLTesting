@@ -1,3 +1,5 @@
+#include <string>
+#include <fstream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -36,6 +38,27 @@ GLuint linkProgram(GLuint vertexShader, GLuint fragmentShader)
         std::cout << "Shader linking error:\n" << info << std::endl;
     }
     return program;
+}
+
+const char* ReadShaderCode(const char* fileName) {
+    std::ifstream file(fileName, std::ios::binary | std::ios::ate);
+    if (!file.is_open()) {
+        std::cout << "File loading failed\n";
+        exit(1);
+    }
+
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    char* buffer = new char[size + 1];
+    if (!file.read(buffer, size)) {
+        std::cout << "File read failed\n";
+        delete[] buffer;
+        exit(1);
+    }
+
+    buffer[size] = '\0';
+    return buffer;
 }
 
 int main()
@@ -107,27 +130,9 @@ int main()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    const char* vertexShaderSource = R"(
-        #version 400
-        layout (location = 0) in vec2 aPos;
-        layout (location = 1) in vec3 aCol;
-        out vec3 fCol;
-        void main()
-        {
-            fCol = aCol;
-            gl_Position = vec4(aPos, 0.0, 1.0);
-        }
-    )";
+    const char* vertexShaderSource = ReadShaderCode("vertex.glsl");
 
-    const char* fragmentShaderSource = R"(
-        #version 400
-        in vec3 fCol;
-        out vec4 FragColor;
-        void main()
-        {
-            FragColor = vec4(fCol, 1.0);
-        }
-    )";
+    const char* fragmentShaderSource = ReadShaderCode("fragment.glsl");
 
     GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexShaderSource);
     GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
