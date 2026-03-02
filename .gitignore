@@ -13,7 +13,6 @@ Release/
 x64/
 x86/
 build/
-.vs/OpenGLTesting.slnx/v18/ipch/AutoPCH/25ed8a779810d7bd/MAIN.ipch
 *.obj
 *.exe
 *.dll
