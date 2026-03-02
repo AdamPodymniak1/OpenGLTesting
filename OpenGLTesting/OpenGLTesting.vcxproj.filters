@@ -11,7 +11,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vertex.glsl" />
-    <None Include="fragment.glsl" />
+    <None Include="fragment.glsl">
+      <Filter>Sources</Filter>
+    </None>
+    <None Include="vertex.glsl">
+      <Filter>Sources</Filter>
+    </None>
   </ItemGroup>
 </Project>
