@@ -20,6 +20,24 @@ GLuint compileShader(GLenum type, const char* src)
     return shader;
 }
 
+GLuint linkProgram(GLuint vertexShader, GLuint fragmentShader)
+{
+    GLuint program = glCreateProgram();
+    glAttachShader(program, vertexShader);
+    glAttachShader(program, fragmentShader);
+    glLinkProgram(program);
+
+    GLint success;
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success)
+    {
+        char info[512];
+        glGetProgramInfoLog(program, 512, nullptr, info);
+        std::cout << "Shader linking error:\n" << info << std::endl;
+    }
+    return program;
+}
+
 int main()
 {
     if (!glfwInit())
@@ -114,10 +132,7 @@ int main()
     GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexShaderSource);
     GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
+    GLuint shaderProgram = linkProgram(vertexShader, fragmentShader);
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
