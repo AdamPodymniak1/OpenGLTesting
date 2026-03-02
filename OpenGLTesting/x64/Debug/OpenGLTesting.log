@@ -1,0 +1,6 @@
+﻿Main.obj : error LNK2019: nierozpoznany symbol zewnętrzny __imp_glewInit przywołany w funkcji main
+Main.obj : error LNK2019: nierozpoznany symbol zewnętrzny __imp_glewGetErrorString przywołany w funkcji main
+Main.obj : error LNK2019: nierozpoznany symbol zewnętrzny __imp_glewGetString przywołany w funkcji main
+C:\Users\agpod\source\repos\OpenGLTesting\OpenGLTesting\lib-vc2022\glew32s.lib : warning LNK4272: wystąpił konflikt typu maszyny biblioteki „x86” z typem maszyny docelowej „x64”
+C:\Users\agpod\source\repos\OpenGLTesting\OpenGLTesting\lib-vc2022\glfw3.lib : warning LNK4272: wystąpił konflikt typu maszyny biblioteki „x86” z typem maszyny docelowej „x64”
+C:\Users\agpod\source\repos\OpenGLTesting\x64\Debug\OpenGLTesting.exe : fatal error LNK1120: liczba nierozpoznanych elementów zewnętrznych: 3
