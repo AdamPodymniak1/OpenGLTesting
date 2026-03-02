@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="OpenGLTesting/OpenGLTesting.vcxproj" />
+  <Project Path="OpenGLTesting/OpenGLTesting.vcxproj" Id="f34fbf7b-ced8-4758-9ff2-8badfb218570" />
 </Solution>

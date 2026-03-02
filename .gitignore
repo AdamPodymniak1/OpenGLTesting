@@ -1,0 +1,27 @@
+# Ignore Visual Studio workspace files and cache
+.vs/
+
+# Ignore user-specific Visual Studio files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore Build outputs
+Debug/
+Release/
+x64/
+x86/
+build/
+*.obj
+*.exe
+*.dll
+*.pdb
+
+# Ignore OS-specific files
+Thumbs.db
+.DS_Store
+
+# Ignore temporary files
+*.tmp
+*.log

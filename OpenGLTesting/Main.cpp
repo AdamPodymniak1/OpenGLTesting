@@ -36,6 +36,8 @@ int main()
         return -1;
     }
 
+    int width, height;
+
     glfwMakeContextCurrent(window);
 
     glewExperimental = GL_TRUE;
@@ -60,11 +62,11 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     glEnableVertexAttribArray(0);
 
     const char* vertexShaderSource = R"(
-        #version 330 core
+        #version 400
         layout (location = 0) in vec2 aPos;
         void main()
         {
@@ -73,7 +75,7 @@ int main()
     )";
 
     const char* fragmentShaderSource = R"(
-        #version 330 core
+        #version 400
         out vec4 FragColor;
         void main()
         {
@@ -94,6 +96,9 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
+        glfwGetFramebufferSize(window, &width, &height);
+        glViewport(0, 0, width, height);
+
         glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
