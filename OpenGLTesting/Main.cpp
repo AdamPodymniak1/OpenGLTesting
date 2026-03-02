@@ -48,9 +48,13 @@ int main()
     }
 
     float vertices[] = {
-         0.0f,  1.0f,
+        0.0f,  0.0f,
+
+        1.0f, 1.0f,
+        -1.0f, 1.0f,
+
         -1.0f, -1.0f,
-         1.0f, -1.0f
+        1.0f, -1.0f,
     };
 
     GLuint VAO;
@@ -64,6 +68,16 @@ int main()
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     glEnableVertexAttribArray(0);
+
+    short indices[] = {
+        0,1,2,
+        0,3,4,
+    };
+
+    GLuint EBO;
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     const char* vertexShaderSource = R"(
         #version 400
@@ -99,12 +113,9 @@ int main()
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height);
 
-        glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -112,6 +123,7 @@ int main()
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
 
     glfwTerminate();
