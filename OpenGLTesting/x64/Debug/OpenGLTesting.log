@@ -1,6 +1,28 @@
-﻿Main.obj : error LNK2019: nierozpoznany symbol zewnętrzny __imp_glewInit przywołany w funkcji main
-Main.obj : error LNK2019: nierozpoznany symbol zewnętrzny __imp_glewGetErrorString przywołany w funkcji main
-Main.obj : error LNK2019: nierozpoznany symbol zewnętrzny __imp_glewGetString przywołany w funkcji main
+﻿  Main.cpp
+Main.obj : error LNK2019: nierozpoznany symbol zewnętrzny glewInit przywołany w funkcji main
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewBindBuffer
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewBufferData
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewDeleteBuffers
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewGenBuffers
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewAttachShader
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewCompileShader
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewCreateProgram
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewCreateShader
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewDeleteProgram
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewDeleteShader
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewEnableVertexAttribArray
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewGetProgramInfoLog
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewGetProgramiv
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewGetShaderInfoLog
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewGetShaderiv
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewLinkProgram
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewShaderSource
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewUseProgram
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewVertexAttribPointer
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewBindVertexArray
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewDeleteVertexArrays
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny __glewGenVertexArrays
+Main.obj : error LNK2001: nierozpoznany symbol zewnętrzny glewExperimental
 C:\Users\agpod\source\repos\OpenGLTesting\OpenGLTesting\lib-vc2022\glew32s.lib : warning LNK4272: wystąpił konflikt typu maszyny biblioteki „x86” z typem maszyny docelowej „x64”
 C:\Users\agpod\source\repos\OpenGLTesting\OpenGLTesting\lib-vc2022\glfw3.lib : warning LNK4272: wystąpił konflikt typu maszyny biblioteki „x86” z typem maszyny docelowej „x64”
-C:\Users\agpod\source\repos\OpenGLTesting\x64\Debug\OpenGLTesting.exe : fatal error LNK1120: liczba nierozpoznanych elementów zewnętrznych: 3
+C:\Users\agpod\source\repos\OpenGLTesting\x64\Debug\OpenGLTesting.exe : fatal error LNK1120: liczba nierozpoznanych elementów zewnętrznych: 24

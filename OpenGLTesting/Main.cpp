@@ -3,6 +3,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <glm/glm/glm.hpp>
+#include "Vertex.h"
+#include "ShapeGenerator.h"
 
 GLuint compileShader(GLenum type, const char* src)
 {
@@ -90,28 +93,7 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
-    const float FIRST_T_Z = 0.5f;
-    const float SECOND_T_Z = -0.5f;
-
-    float vertices[] = {
-        -1.0f,  -1.0f, FIRST_T_Z,
-        1.0f, 0.0f, 0.0f,
-
-        0.0f, 1.0f, FIRST_T_Z,
-        0.0f, 1.0f, 0.0f,
-
-        1.0f, -1.0f, FIRST_T_Z,
-        0.0f, 0.0f, 1.0f,
-
-        -1.0f, 1.0f, SECOND_T_Z,
-        1.0f, 1.0f, 0.0f,
-
-        0.0f, -1.0f, SECOND_T_Z,
-        0.0f, 1.0f, 1.0f,
-
-        1.0f, 1.0f, SECOND_T_Z,
-        1.0f, 0.0f, 1.0f,
-    };
+    ShapeData tri = ShapeGenerator::makeTriangle();
 
     GLuint VAO;
     glGenVertexArrays(1, &VAO);
@@ -120,7 +102,7 @@ int main()
     GLuint VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, tri.vertexBufferSize(), tri.vertices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
@@ -128,15 +110,10 @@ int main()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char*)(3 * sizeof(float)));
 
-    unsigned short indices[] = {
-        0,1,2,
-        3,4,5,
-    };
-
     GLuint EBO;
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, tri.indexBufferSize(), tri.indices, GL_STATIC_DRAW);
 
     const char* vertexShaderSource = ReadShaderCode("vertex.glsl");
 
@@ -152,13 +129,13 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height);
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, sizeof(vertices), GL_UNSIGNED_SHORT, 0);
+        glDrawElements(GL_TRIANGLES, tri.numIndecies, GL_UNSIGNED_SHORT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -168,6 +145,8 @@ int main()
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
+
+    tri.cleanup();
 
     glfwTerminate();
     return 0;

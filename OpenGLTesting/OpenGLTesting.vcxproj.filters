@@ -4,10 +4,16 @@
     <Filter Include="Sources">
       <UniqueIdentifier>{dee47d36-6f0f-41ba-aa5e-b2c36b6791bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Primitives">
+      <UniqueIdentifier>{b678fba5-bbfa-4bbd-86c4-52e7639860be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeGenerator.cpp">
+      <Filter>Primitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -17,5 +23,16 @@
     <None Include="vertex.glsl">
       <Filter>Sources</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Vertex.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeData.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeGenerator.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
