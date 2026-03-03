@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <glm/glm/glm.hpp>
+#include <glm/glm/gtc/matrix_transform.hpp>
 #include "Vertex.h"
 #include "ShapeGenerator.h"
 
@@ -93,7 +94,7 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
-    ShapeData tri = ShapeGenerator::makeTriangle();
+    ShapeData shape = ShapeGenerator::makeCube();
 
     GLuint VAO;
     glGenVertexArrays(1, &VAO);
@@ -102,7 +103,7 @@ int main()
     GLuint VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, tri.vertexBufferSize(), tri.vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, shape.vertexBufferSize(), shape.vertices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
@@ -113,7 +114,7 @@ int main()
     GLuint EBO;
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, tri.indexBufferSize(), tri.indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, shape.indexBufferSize(), shape.indices, GL_STATIC_DRAW);
 
     const char* vertexShaderSource = ReadShaderCode("vertex.glsl");
 
@@ -134,8 +135,18 @@ int main()
         glViewport(0, 0, width, height);
 
         glUseProgram(shaderProgram);
+
+        glm::mat4 modelTransformMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+        glm::mat4 projectionMatrix = glm::perspective(60.0f, ((float)width) / height, 0.1f, 10.0f);
+
+        GLint modelTransformMatrixUniformLocation = glGetUniformLocation(shaderProgram, "modelTransformMatrix");
+        GLint projectionMatrixUniformLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
+
+        glUniformMatrix4fv(modelTransformMatrixUniformLocation, 1, GL_FALSE, &modelTransformMatrix[0][0]);
+        glUniformMatrix4fv(projectionMatrixUniformLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
+
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, tri.numIndecies, GL_UNSIGNED_SHORT, 0);
+        glDrawElements(GL_TRIANGLES, shape.numIndecies, GL_UNSIGNED_SHORT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -146,7 +157,7 @@ int main()
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
 
-    tri.cleanup();
+    shape.cleanup();
 
     glfwTerminate();
     return 0;

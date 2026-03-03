@@ -65,7 +65,7 @@ ShapeData ShapeGenerator::makeCube() {
         glm::vec3(+0.7f, +0.8f, +0.2f),
         glm::vec3(-1.0f, +1.0f, -1.0f),
         glm::vec3(+0.5f, +0.7f, +0.3f),
-        glm::vec3(-1.0f, -1.0f, -1.0f),
+        glm::vec3(-1.0f, -1.0f, +1.0f),
         glm::vec3(+0.4f, +0.7f, +0.7f),
         glm::vec3(-1.0f, -1.0f, -1.0f),
         glm::vec3(+0.2f, +0.5f, +1.0f),
