@@ -136,14 +136,15 @@ int main()
 
         glUseProgram(shaderProgram);
 
-        glm::mat4 modelTransformMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
-        glm::mat4 projectionMatrix = glm::perspective(60.0f, ((float)width) / height, 0.1f, 10.0f);
+        glm::mat4 projectionMatrix = glm::perspective(45.0f, ((float)width) / height, 0.1f, 10.0f);
+        glm::mat4 translationMatrix = glm::translate(projectionMatrix, glm::vec3(0.0f, 0.0f, -4.0f));
+        glm::mat4 rotationMatrix = glm::rotate(translationMatrix, 54.0f, glm::vec3(1.0f, 0.0f, 1.0f));
 
-        GLint modelTransformMatrixUniformLocation = glGetUniformLocation(shaderProgram, "modelTransformMatrix");
-        GLint projectionMatrixUniformLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
+        glm::mat4 transformMatrix = rotationMatrix;
 
-        glUniformMatrix4fv(modelTransformMatrixUniformLocation, 1, GL_FALSE, &modelTransformMatrix[0][0]);
-        glUniformMatrix4fv(projectionMatrixUniformLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
+        GLint transformMatrixUniformLocation = glGetUniformLocation(shaderProgram, "transformMatrix");
+
+        glUniformMatrix4fv(transformMatrixUniformLocation, 1, GL_FALSE, &transformMatrix[0][0]);
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, shape.numIndecies, GL_UNSIGNED_SHORT, 0);
