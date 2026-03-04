@@ -82,6 +82,8 @@ int main()
     }
 
     int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0, 0, width, height);
 
     glfwMakeContextCurrent(window);
 
@@ -116,6 +118,27 @@ int main()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, shape.indexBufferSize(), shape.indices, GL_STATIC_DRAW);
 
+    GLuint transformationMatrixBuffer;
+    glGenBuffers(1, &transformationMatrixBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, transformationMatrixBuffer);
+
+    glm::mat4 projectionMatrix = glm::perspective(45.0f, ((float)width) / height, 0.1f, 10.0f);
+    glm::mat4 fullTransform[] = {
+        projectionMatrix * glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, -4.0f))* glm::rotate(glm::mat4(1.0f), 36.0f, glm::vec3(1.0f, 0.0f, 1.0f)),
+        projectionMatrix * glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, -7.0f)) * glm::rotate(glm::mat4(1.0f), 54.0f, glm::vec3(0.0f, 1.0f, 0.0f)),
+    };
+
+    GLuint matrixVBO;
+    glGenBuffers(1, &matrixVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, matrixVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(fullTransform), &fullTransform[0], GL_STATIC_DRAW);
+
+    for (int i = 0; i < 4; i++) {
+        glEnableVertexAttribArray(2 + i);
+        glVertexAttribPointer(2 + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * i));
+        glVertexAttribDivisor(2 + i, 1);
+    }
+
     const char* vertexShaderSource = ReadShaderCode("vertex.glsl");
 
     const char* fragmentShaderSource = ReadShaderCode("fragment.glsl");
@@ -136,32 +159,8 @@ int main()
 
         glUseProgram(shaderProgram);
 
-        GLint transformMatrixUniformLocation = glGetUniformLocation(shaderProgram, "transformMatrix");
-
-        glm::mat4 transformMatrix;
-        glm::mat4 projectionMatrix = glm::perspective(45.0f, ((float)width) / height, 0.1f, 10.0f);
-
-        // Cube 1
-        glm::mat4 translationMatrix = glm::translate(projectionMatrix, glm::vec3(-1.0f, 0.0f, -4.0f));
-        glm::mat4 rotationMatrix = glm::rotate(translationMatrix, 36.0f, glm::vec3(1.0f, 0.0f, 1.0f));
-
-        transformMatrix = rotationMatrix;
-
-        glUniformMatrix4fv(transformMatrixUniformLocation, 1, GL_FALSE, &transformMatrix[0][0]);
-
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, shape.numIndecies, GL_UNSIGNED_SHORT, 0);
-
-        // Cube 2
-        translationMatrix = glm::translate(projectionMatrix, glm::vec3(1.0f, 0.0f, -7.0f));
-        rotationMatrix = glm::rotate(translationMatrix, 54.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-
-        transformMatrix = rotationMatrix;
-
-        glUniformMatrix4fv(transformMatrixUniformLocation, 1, GL_FALSE, &transformMatrix[0][0]);
-
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, shape.numIndecies, GL_UNSIGNED_SHORT, 0);
+        glDrawElementsInstanced(GL_TRIANGLES, shape.numIndecies, GL_UNSIGNED_SHORT, 0, 2);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

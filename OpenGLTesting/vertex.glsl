@@ -2,8 +2,7 @@
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aCol;
-
-uniform mat4 transformMatrix;
+layout (location = 2) in mat4 transformMatrix;
 
 out vec3 fCol;
 
